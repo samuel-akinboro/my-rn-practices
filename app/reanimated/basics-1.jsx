@@ -4,17 +4,23 @@ import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { devicewidth } from '../../theme/sizes';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { Extrapolation, interpolate, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 const WelcomeScreen = () => {
   const texts = ['HAPPY ', 'INDEPENDENCE ', 'GREETINGS ', 'BLACKVIBES ', 'CODES ', 'PROGRAMMER ', 'KING THE'];
+  const titleValue = useSharedValue(0);
   const ctaBtnWidth = useSharedValue(devicewidth * 0.30);
   const positionXValues = texts.map(() => useSharedValue(-1000));
 
   useEffect(() => {
+    animateTitle();
     animateTexts();
     animateCTA();
   }, []);
+
+  const animateTitle = () => {
+    titleValue.value = withTiming(1, {duration: 1000});
+  }
 
   const animateCTA = () => {
     ctaBtnWidth.value = withSpring(devicewidth * 0.90, {
@@ -37,14 +43,21 @@ const WelcomeScreen = () => {
 
   const handlePress = () => {
     ctaBtnWidth.value = devicewidth * 0.30;
+    titleValue.value = 0;
     positionXValues.forEach(positionX => {
       positionX.value = -1000;
     });
     animateTexts();
     animateCTA();
+    animateTitle();
   };
 
   const MyAnimatedCTA = Animated.createAnimatedComponent(TouchableOpacity);
+
+  const animatedTitleStyle = useAnimatedStyle(() => ({
+    opacity: titleValue.value,
+    transform: [{translateY: interpolate(titleValue.value, [0, 1], [-10, 0], Extrapolation.CLAMP)}]
+  }))
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
@@ -76,9 +89,9 @@ const WelcomeScreen = () => {
           </View>
         </View>
         <View style={styles.card}>
-          <Text style={styles.cardText}>
+          <Animated.Text style={[styles.cardText, animatedTitleStyle]}>
             Happy Independence Day 🇳🇬
-          </Text>
+          </Animated.Text>
           <MyAnimatedCTA 
             style={[
               styles.loginButton,
