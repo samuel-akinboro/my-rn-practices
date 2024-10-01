@@ -4,15 +4,28 @@ import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { devicewidth } from '../../theme/sizes';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 const WelcomeScreen = () => {
   const texts = ['HAPPY ', 'INDEPENDENCE ', 'GREETINGS ', 'BLACKVIBES ', 'CODES ', 'PROGRAMMER ', 'KING THE'];
+  const ctaBtnWidth = useSharedValue(devicewidth * 0.30);
   const positionXValues = texts.map(() => useSharedValue(-1000));
 
   useEffect(() => {
     animateTexts();
+    animateCTA();
   }, []);
+
+  const animateCTA = () => {
+    ctaBtnWidth.value = withSpring(devicewidth * 0.90, {
+      duration: 2000,
+      dampingRatio: 0.8,
+      stiffness: 100,
+      overshootClamping: true,
+      restDisplacementThreshold: 1,
+      restSpeedThreshold: 25,
+    });
+  }
 
   const animateTexts = () => {
     positionXValues.forEach((positionX, index) => {
@@ -23,11 +36,15 @@ const WelcomeScreen = () => {
   };
 
   const handlePress = () => {
+    ctaBtnWidth.value = devicewidth * 0.30;
     positionXValues.forEach(positionX => {
       positionX.value = -1000;
     });
     animateTexts();
+    animateCTA();
   };
+
+  const MyAnimatedCTA = Animated.createAnimatedComponent(TouchableOpacity);
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
@@ -62,9 +79,17 @@ const WelcomeScreen = () => {
           <Text style={styles.cardText}>
             Happy Independence Day 🇳🇬
           </Text>
-          <TouchableOpacity style={styles.loginButton} onPress={handlePress}>
+          <MyAnimatedCTA 
+            style={[
+              styles.loginButton,
+              {
+                width: ctaBtnWidth
+              }
+            ]} 
+            onPress={handlePress}
+          >
             <Text style={styles.loginButtonText}>Log In</Text>
-          </TouchableOpacity>
+          </MyAnimatedCTA>
           <Text style={styles.orText}>Or continue with</Text>
           <View style={styles.socialButtons}>
             <TouchableOpacity style={styles.socialButton}>
