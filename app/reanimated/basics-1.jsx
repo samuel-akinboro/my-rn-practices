@@ -11,11 +11,13 @@ const WelcomeScreen = () => {
   const titleValue = useSharedValue(0);
   const ctaBtnWidth = useSharedValue(devicewidth * 0.30);
   const positionXValues = texts.map(() => useSharedValue(-1000));
+  const smallCTAValues = [...'....'].map(() => useSharedValue((devicewidth - 140)/6))
 
   useEffect(() => {
     animateTitle();
     animateTexts();
     animateCTA();
+    animateSmallCTAs();
   }, []);
 
   const animateTitle = () => {
@@ -41,15 +43,27 @@ const WelcomeScreen = () => {
     });
   };
 
+  const animateSmallCTAs = () => {
+    smallCTAValues.forEach((value, index) => {
+      setTimeout(() =>{
+        value.value = withTiming((devicewidth - 140)/4, {duration: 500})
+      }, index * 80)
+    })
+  }
+
   const handlePress = () => {
     ctaBtnWidth.value = devicewidth * 0.30;
     titleValue.value = 0;
     positionXValues.forEach(positionX => {
       positionX.value = -1000;
     });
+    smallCTAValues.forEach(value => {
+      value.value = (devicewidth - 140)/6
+    })
     animateTexts();
     animateCTA();
     animateTitle();
+    animateSmallCTAs()
   };
 
   const MyAnimatedCTA = Animated.createAnimatedComponent(TouchableOpacity);
@@ -105,18 +119,11 @@ const WelcomeScreen = () => {
           </MyAnimatedCTA>
           <Text style={styles.orText}>Or continue with</Text>
           <View style={styles.socialButtons}>
-            <TouchableOpacity style={styles.socialButton}>
-              <Text style={styles.socialButtonText}>G</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Text style={styles.socialButtonText}>f</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Text style={styles.socialButtonText}>🍎</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Text style={styles.socialButtonText}>✉️</Text>
-            </TouchableOpacity>
+            {[...`....`].map((t, i) => (
+              <MyAnimatedCTA style={[styles.socialButton, {width: smallCTAValues[i], height:smallCTAValues[i]}]} key={i}>
+                <Text style={styles.socialButtonText}>G</Text>
+              </MyAnimatedCTA>
+            ))}
           </View>
         </View>
       </LinearGradient>
@@ -194,7 +201,8 @@ const styles = StyleSheet.create({
   socialButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%'
+    width: '100%',
+    height: (devicewidth - 140)/4,
   },
   socialButton: {
     width: (devicewidth - 140)/4,
