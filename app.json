@@ -1,6 +1,13 @@
 {
   "expo": {
     "name": "my-rn-practices",
-    "slug": "my-rn-practices"
+    "slug": "my-rn-practices",
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "my-rn-practices"
+  },
+  "web": {
+    "bundler": "metro"
   }
 }
