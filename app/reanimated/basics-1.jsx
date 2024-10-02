@@ -5,19 +5,23 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { devicewidth } from '../../theme/sizes';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const WelcomeScreen = () => {
   const texts = ['HAPPY ', 'INDEPENDENCE ', 'GREETINGS ', 'BLACKVIBES ', 'CODES ', 'PROGRAMMER ', 'KING THE'];
+  const socialIcons = ["google", "facebook", "apple", "twitter"];
   const titleValue = useSharedValue(0);
   const ctaBtnWidth = useSharedValue(devicewidth * 0.30);
   const positionXValues = texts.map(() => useSharedValue(-1000));
-  const smallCTAValues = [...'....'].map(() => useSharedValue((devicewidth - 140)/6))
+  const smallCTAValues = socialIcons.map(() => useSharedValue((devicewidth - 140)/6));
+  const smallCTATextValues = socialIcons.map(() => useSharedValue(18));
 
   useEffect(() => {
     animateTitle();
     animateTexts();
     animateCTA();
     animateSmallCTAs();
+    animateIcons();
   }, []);
 
   const animateTitle = () => {
@@ -47,9 +51,23 @@ const WelcomeScreen = () => {
     smallCTAValues.forEach((value, index) => {
       setTimeout(() =>{
         value.value = withTiming((devicewidth - 140)/4, {duration: 500})
-      }, index * 80)
+      }, index * 140)
     })
+
+    // smallCTATextValues.forEach((t, i) => {
+    //   setTimeout(() => {
+    //     t.value = withTiming(26, {duration: 500})
+    //   }, i * 140)
+    // })
   }
+
+  const animateIcons = () => {
+    smallCTATextValues.forEach((t, i) => {
+      setTimeout(() => {
+        t.value = withTiming(26, {duration: 1500})
+      }, i * 140)
+    })
+  };
 
   const handlePress = () => {
     ctaBtnWidth.value = devicewidth * 0.30;
@@ -60,18 +78,29 @@ const WelcomeScreen = () => {
     smallCTAValues.forEach(value => {
       value.value = (devicewidth - 140)/6
     })
+    smallCTATextValues.forEach(value => {
+      value.value = 18
+    })
     animateTexts();
     animateCTA();
     animateTitle();
-    animateSmallCTAs()
+    animateSmallCTAs();
+    animateIcons();
   };
 
+  const MyAnimatedIcon = Animated.createAnimatedComponent(FontAwesome);
   const MyAnimatedCTA = Animated.createAnimatedComponent(TouchableOpacity);
 
   const animatedTitleStyle = useAnimatedStyle(() => ({
     opacity: titleValue.value,
     transform: [{translateY: interpolate(titleValue.value, [0, 1], [-10, 0], Extrapolation.CLAMP)}]
-  }))
+  }));
+
+  const iconAnimatedStyles = smallCTATextValues.map(value => 
+    useAnimatedStyle(() => ({
+      fontSize: value.value,
+    }))
+  );
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
@@ -119,10 +148,33 @@ const WelcomeScreen = () => {
           </MyAnimatedCTA>
           <Text style={styles.orText}>Or continue with</Text>
           <View style={styles.socialButtons}>
-            {[...`....`].map((t, i) => (
-              <MyAnimatedCTA style={[styles.socialButton, {width: smallCTAValues[i], height:smallCTAValues[i]}]} key={i}>
-                <Text style={styles.socialButtonText}>G</Text>
-              </MyAnimatedCTA>
+            {socialIcons.map((t, i) => (
+              <View 
+                key={i}
+                style={[
+                  {
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: (devicewidth - 140)/4,
+                    height: (devicewidth - 140)/4
+                  }
+                ]}
+              >
+                <MyAnimatedCTA style={[styles.socialButton, {width: smallCTAValues[i], height:smallCTAValues[i]}]}>
+                  <Animated.View 
+                    style={{
+                      transform: [{scale: interpolate(smallCTATextValues[i].value, [18, 26], [0.5, 1])}],
+                    }}
+                  >
+                    <MyAnimatedIcon 
+                      name={socialIcons[i]} 
+                      // style={iconAnimatedStyles[i]}
+                      size={26} 
+                      color="black" 
+                    />
+                  </Animated.View>
+                </MyAnimatedCTA>
+              </View>
             ))}
           </View>
         </View>
