@@ -9,6 +9,10 @@ const index = () => {
       name: 'Nigeria independence',
       href: 'reanimated/independence'
     },
+    {
+      name: 'Fitness feed',
+      href: 'reanimated/fitness-feed'
+    },
   ]
   return (
     <SafeAreaView style={{flex: 1}}>
