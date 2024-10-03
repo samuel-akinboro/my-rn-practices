@@ -9,6 +9,10 @@ const index = () => {
       name: 'reanimated',
       href: 'reanimated/home'
     },
+    {
+      name: 'Auto fill SMS OTP',
+      href: 'otp/sms-otp-autofill'
+    },
   ]
   return (
     <SafeAreaView style={{flex: 1}}>

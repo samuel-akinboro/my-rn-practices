@@ -6,8 +6,8 @@ const index = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const routes = [
     {
-      name: 'basics-1',
-      href: 'reanimated/basics-1'
+      name: 'Nigeria independence',
+      href: 'reanimated/independence'
     },
   ]
   return (

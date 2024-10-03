@@ -3221,6 +3221,11 @@ expo-asset@~10.0.10:
     invariant "^2.2.4"
     md5-file "^3.2.3"
 
+expo-clipboard@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/expo-clipboard/-/expo-clipboard-6.0.3.tgz#dfea74d4a004dce59ecefd063d6fb9f1c356a03f"
+  integrity sha512-RIKDsuHkYfaspifbFpVC8sBVFKR05L7Pj7mU2/XkbrW9m01OBNvdpGraXEMsTFCx97xMGsZpEw9pPquL4j4xVg==
+
 expo-constants@~16.0.0, expo-constants@~16.0.2:
   version "16.0.2"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-16.0.2.tgz#eb5a1bddb7308fd8cadac8fc44decaf4784cac5e"
@@ -3293,6 +3298,11 @@ expo-router@~3.5.23:
     expo-splash-screen "0.27.5"
     react-native-helmet-async "2.0.4"
     schema-utils "^4.0.1"
+
+expo-sms-retriever@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/expo-sms-retriever/-/expo-sms-retriever-0.1.1.tgz#eccf2739f549ef595b579efe0aefc48aea058e28"
+  integrity sha512-wyqetz6T1MfrGpFiBEf8T3DaDAGTbdLEPXDtDE9Opk9l6uBRIsiE4Ote62jcwGNYWbNUPI//VqN0xS3FnxbM6w==
 
 expo-splash-screen@0.27.5:
   version "0.27.5"

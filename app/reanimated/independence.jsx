@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-const WelcomeScreen = () => {
+const Independence = () => {
   const texts = ['HAPPY ', 'INDEPENDENCE ', 'GREETINGS ', 'BLACKVIBES ', 'CODES ', 'PROGRAMMER ', 'KING THE'];
   const socialIcons = ["google", "facebook", "apple", "twitter"];
   const titleValue = useSharedValue(0);
@@ -270,4 +270,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen;
+export default Independence;
